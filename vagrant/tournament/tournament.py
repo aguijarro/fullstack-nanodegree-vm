@@ -5,34 +5,26 @@
 
 import psycopg2
 
-
-def connect():
+def connect(database_name="tournament"):
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
-
+    try:
+        db = psycopg2.connect("dbname={}".format(database_name))
+        cursor = db.cursor()
+        return db, cursor
+    except:
+        print("Can't connect")
 
 def deleteMatches():
     """Remove all the match records from the database."""
-    DB = connect()
-    c = DB.cursor()
+    DB, c = connect()
     sql = "DELETE FROM match;"
-    c.execute(sql)
-    DB.commit()
-    DB.close()
-
-def deleteScoreboard():
-    """Remove all the scoreboard records from the database."""
-    DB = connect()
-    c = DB.cursor()
-    sql = "DELETE FROM scoreboard;"
     c.execute(sql)
     DB.commit()
     DB.close()
 
 def deletePlayers():
     """Remove all the player records from the database."""
-    DB = connect()
-    c = DB.cursor()
+    DB, c = connect()
     sql = "DELETE FROM player;"
     c.execute(sql)
     DB.commit()
@@ -40,8 +32,7 @@ def deletePlayers():
 
 def countPlayers():
     """Returns the number of players currently registered."""
-    DB = connect()
-    c = DB.cursor()
+    DB, c = connect()
     sql = '''SELECT count(*) as tot
                 FROM player;
           '''
@@ -59,16 +50,11 @@ def registerPlayer(name):
     Args:
       name: the player's full name (need not be unique).
     """
-    DB = connect()
-    c = DB.cursor()
+    DB, c = connect()
     sql_player = '''INSERT INTO player(id_tournament,name)
-                VALUES (1,%s) RETURNING id_player;'''
+                VALUES (1,%s);'''
     c.execute(sql_player,(name,))
     DB.commit()
-    id_player = c.fetchone()[0]
-    sql_scoreboard = '''INSERT INTO scoreboard(id_tournament,id_player, matches, win, lost)
-                VALUES (1,%s,0,0,0);'''
-    c.execute(sql_scoreboard,(id_player,))
     DB.commit()
     DB.close()
 
@@ -86,11 +72,11 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-    DB = connect()
-    c = DB.cursor()
+    DB, c = connect()
     sql = '''SELECT  s.id_player, p.name, s.win, s.matches
-                FROM scoreboard s, player p
-                WHERE s.id_player = p.id_player
+                FROM scoreboard s
+                RIGHT JOIN player p
+                ON s.id_player = p.id_player
                 ORDER BY 3 DESC;
           '''
     c.execute(sql)
@@ -109,40 +95,11 @@ def reportMatch(winner, loser):
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
-    DB = connect()
-    c = DB.cursor()
-
-    #get number of match for winners
-    sql_win_num_match = '''SELECT  get_num_match(%s,%s);'''
-    c.execute(sql_win_num_match,(1,winner))
-    winner_num_match = c.fetchone()[0]
-
-    #get number of match for loser
-    sql_lost_num_match = '''SELECT  get_num_match(%s,%s);'''
-    c.execute(sql_lost_num_match,(1,loser))
-    loser_num_match = c.fetchone()[0]
-
-    #get number of wins
-    sql_winner_num_win = '''SELECT  get_num_win(%s,%s);'''
-    c.execute(sql_winner_num_win,(1,winner))
-    winner_num_win = c.fetchone()[0]
-
-    #get number of lost
-    sql_loser_num_lost = '''SELECT  get_num_lost(%s,%s);'''
-    c.execute(sql_loser_num_lost,(1,loser))
-    loser_num_lost = c.fetchone()[0]
+    DB, c = connect()
 
     sql_match = '''INSERT INTO match(id_tournament,id_winner,id_loser)
                 VALUES (1,%s,%s);'''
     c.execute(sql_match,(winner,loser,))
-
-    sql_update_winner = '''UPDATE scoreboard set matches = %s , win = %s
-                WHERE id_tournament = %s and id_player = %s;'''
-    c.execute(sql_update_winner,(winner_num_match + 1, winner_num_win + 1, 1, winner,))
-
-    sql_update_loser = '''UPDATE scoreboard set matches = %s , lost = %s
-                WHERE id_tournament = %s and id_player = %s;'''
-    c.execute(sql_update_loser,(loser_num_match + 1, loser_num_lost + 1, 1, loser,))
 
     DB.commit()
     DB.close()
@@ -153,9 +110,8 @@ def validPairs(first_player, second_player):
     Args:
         first_player: the player's 1 id (as registered)
         second_player: the player's 2 id (as registered)
-    """    
-    DB = connect()
-    c = DB.cursor()
+    """
+    DB, c = connect()
     sql = '''SELECT  count(*) as num_match
                 FROM match m
                 WHERE (m.id_winner = %s and m.id_loser = %s)

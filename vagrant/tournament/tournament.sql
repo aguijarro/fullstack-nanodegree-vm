@@ -37,57 +37,32 @@ CREATE TABLE match(
   id_loser integer references player
 );
 
-CREATE TABLE scoreboard(
-  id_scoreboard serial primary key,
-  id_tournament integer references tournament,
-  id_player integer references player,
-  matches integer,
-  win integer,
-  lost integer
-);
-
-CREATE OR REPLACE FUNCTION get_num_match(p_id_tournament integer, p_id_player integer)
-RETURNS integer AS $num_match$
-declare
-  num_match integer;
-BEGIN
-    SELECT matches into num_match
-    FROM scoreboard
-    WHERE id_tournament = $1
-    AND id_player = $2;
-    RETURN num_match;
-END;
-$num_match$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION get_num_win(p_id_tournament integer, p_id_player integer)
-RETURNS integer AS $num_win$
-DECLARE
-  num_win integer;
-BEGIN
-    SELECT win into num_win
-    FROM scoreboard
-    WHERE id_tournament = p_id_tournament
-    AND id_player = p_id_player;
-    RETURN num_win;
-END;
-$num_win$ LANGUAGE plpgsql;
-
-
-CREATE OR REPLACE FUNCTION get_num_lost(p_id_tournament integer, p_id_player integer)
-RETURNS integer AS $num_lost$
-declare
-  num_lost integer;
-BEGIN
-    SELECT lost into num_lost
-    FROM scoreboard
-    WHERE id_tournament = p_id_tournament
-    AND id_player = p_id_player;
-    RETURN num_lost;
-END;
-$num_lost$ LANGUAGE plpgsql;
-
-
-
+CREATE or REPLACE VIEW scoreboard AS
+SELECT  p.id_player,
+        p.name,
+         coalesce (played.matches, 0) matches,
+         coalesce (win.win, 0) win,
+         coalesce (lost.lost, 0) lost
+    FROM (  SELECT un.PLAYER, SUM (un.MATCHES) matches
+              FROM (  SELECT id_winner player, COUNT (*) AS matches
+                        FROM match
+                    GROUP BY id_winner
+                    UNION ALL
+                      SELECT id_loser player, COUNT (*) AS matches
+                        FROM match
+                    GROUP BY id_loser) un
+          GROUP BY PLAYER) played
+         LEFT JOIN (  SELECT id_winner player, COUNT (*) AS win
+                        FROM match
+                    GROUP BY id_winner) win
+            ON played.PLAYER = win.PLAYER
+         LEFT JOIN (  SELECT id_loser player, COUNT (*) AS lost
+                        FROM match
+                    GROUP BY id_loser) lost
+            ON played.PLAYER = lost.PLAYER
+          RIGHT JOIN player p
+           ON played.PLAYER = p.id_player
+ORDER BY coalesce (win.win, 0) DESC;
 
 -- Insert data to support a single tournament at a time
 -- \d name_table

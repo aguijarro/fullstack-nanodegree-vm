@@ -13,7 +13,6 @@ def testDeleteMatches():
 def testDelete():
     deleteMatches()
     """Remove all records needed to clean the database."""
-    deleteScoreboard()
     deletePlayers()
     print "2. Player records can be deleted."
 
@@ -21,7 +20,6 @@ def testDelete():
 def testCount():
     deleteMatches()
     """Remove all records needed to clean the database."""
-    deleteScoreboard()
     deletePlayers()
     c = countPlayers()
     if c == '0':
@@ -35,7 +33,6 @@ def testCount():
 def testRegister():
     deleteMatches()
     """Remove all records needed to clean the database."""
-    deleteScoreboard()
     deletePlayers()
     registerPlayer("Chandra Nalaar")
     c = countPlayers()
@@ -48,7 +45,6 @@ def testRegister():
 def testRegisterCountDelete():
     deleteMatches()
     """Remove all records needed to clean the database."""
-    deleteScoreboard()
     deletePlayers()
     registerPlayer("Markov Chaney")
     registerPlayer("Joe Malik")
@@ -59,7 +55,6 @@ def testRegisterCountDelete():
         raise ValueError(
             "After registering four players, countPlayers should be 4.")
     """Remove all records needed to clean the database."""
-    deleteScoreboard()
     deletePlayers()
     c = countPlayers()
     if c != 0:
@@ -70,11 +65,12 @@ def testRegisterCountDelete():
 def testStandingsBeforeMatches():
     deleteMatches()
     """Remove all records needed to clean the database."""
-    deleteScoreboard()
     deletePlayers()
     registerPlayer("Melpomene Murray")
     registerPlayer("Randy Schwartz")
     standings = playerStandings()
+    print standings
+
     if len(standings) < 2:
         raise ValueError("Players should appear in playerStandings even before "
                          "they have played any matches.")
@@ -95,7 +91,6 @@ def testStandingsBeforeMatches():
 def testReportMatches():
     deleteMatches()
     """Remove all records needed to clean the database."""
-    deleteScoreboard()
     deletePlayers()
     registerPlayer("Bruno Walton")
     registerPlayer("Boots O'Neal")
@@ -119,7 +114,6 @@ def testReportMatches():
 def testPairings():
     deleteMatches()
     """Remove all records needed to clean the database."""
-    deleteScoreboard()
     deletePlayers()
     registerPlayer("Twilight Sparkle")
     registerPlayer("Fluttershy")
@@ -141,7 +135,7 @@ def testPairings():
     if correct_pairs != actual_pairs:
         raise ValueError(
             "After one match, players with one win should be paired.")
-    
+
     print "8. After one match, players with one win are paired."
 
 
