@@ -1,0 +1,19 @@
+"""Execute Requirements"""
+
+"""Create a database """
+
+DROP DATABASE IF EXISTS catalog_dev;
+CREATE DATABASE catalog_dev;
+\c catalog_dev;
+
+"""Change password database"""
+ALTER USER vagrant WITH PASSWORD 'vagrant';
+
+"""create a migration repository"""
+python app.py db init
+
+"""creates database tables"""
+python app.py deploy
+
+"""run server"""
+python app.py runserver

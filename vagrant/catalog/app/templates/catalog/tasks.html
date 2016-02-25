@@ -1,0 +1,74 @@
+{% extends "catalog/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block leftMenu %}
+<ul class="sidebar-nav">
+    <li class="sidebar-brand">
+        <a href="#">
+            Start Bootstrap
+        </a>
+    </li>
+    <li>
+        <a href="#">Dashboard</a>
+    </li>
+    <li>
+        <a href="#">Shortcuts</a>
+    </li>
+    <li>
+        <a href="#">Overview</a>
+    </li>
+    <li>
+        <a href="#">Events</a>
+    </li>
+    <li>
+        <a href="#">About</a>
+    </li>
+    <li>
+        <a href="#">Services</a>
+    </li>
+    <li>
+        <a href="#">Contact</a>
+    </li>
+</ul>
+{% endblock %}
+
+
+{% block content %}
+<h1>Tasks</h1>
+
+<p>
+   <a href="{{ url_for('mod_catalog.newTask') }}" class="btn btn-sm btn-success pull-right" role="button">Nuevo</a>
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Type Task</th>
+                <th>Task</th>
+                <th>Username</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for task in tasks %}
+              <tr>
+                <td>{{ task.name }}</td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.name }}</td>
+                <td><a href="{{ url_for('mod_catalog.editTask', task_id = task.id ) }}" class="btn btn-xs btn-link" role="button">Edit</a></td>
+                <td><a href="{{ url_for('mod_catalog.deleteTask', task_id = task.id ) }}" class="btn btn-xs btn-link" role="button">Delete</a></td>
+              </tr>
+                <h2></h2>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+  </div>
+{% endblock %}

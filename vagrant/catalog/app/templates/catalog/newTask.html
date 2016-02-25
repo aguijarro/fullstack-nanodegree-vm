@@ -1,0 +1,43 @@
+{% extends "catalog/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}New Task{% endblock %}
+
+{% block leftMenu %}
+<ul class="sidebar-nav">
+    <li class="sidebar-brand">
+        <a href="#">
+            Start Bootstrap
+        </a>
+    </li>
+    <li>
+        <a href="#">Dashboard</a>
+    </li>
+    <li>
+        <a href="#">Shortcuts</a>
+    </li>
+    <li>
+        <a href="#">Overview</a>
+    </li>
+    <li>
+        <a href="#">Events</a>
+    </li>
+    <li>
+        <a href="#">About</a>
+    </li>
+    <li>
+        <a href="#">Services</a>
+    </li>
+    <li>
+        <a href="#">Contact</a>
+    </li>
+</ul>
+{% endblock %}
+
+
+{% block content %}
+<h1>New Task</h1>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
