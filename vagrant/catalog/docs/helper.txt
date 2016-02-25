@@ -1,4 +1,5 @@
 """Execute Requirements"""
+pip install -r requirements.txt
 
 """Create a database """
 
