@@ -3,41 +3,18 @@
 
 {% block title %}Edit Task{% endblock %}
 
-{% block leftMenu %}
-<ul class="sidebar-nav">
-    <li class="sidebar-brand">
-        <a href="#">
-            Start Bootstrap
-        </a>
-    </li>
-    <li>
-        <a href="#">Dashboard</a>
-    </li>
-    <li>
-        <a href="#">Shortcuts</a>
-    </li>
-    <li>
-        <a href="#">Overview</a>
-    </li>
-    <li>
-        <a href="#">Events</a>
-    </li>
-    <li>
-        <a href="#">About</a>
-    </li>
-    <li>
-        <a href="#">Services</a>
-    </li>
-    <li>
-        <a href="#">Contact</a>
-    </li>
-</ul>
-{% endblock %}
-
-
 {% block content %}
-<h1>Edit Task</h1>
+<h3>Edit Task</h3>
+
+<p>
+      <a href="{{ url_for('mod_catalog.tasks', type_task_id = task.type_task.id ) }}" class="btn btn-sm btn-warning pull-right" role="button">Volver</a>
+</p>
+
 <div class="col-md-4">
+  <div class="input-group">
     {{ wtf.quick_form(form) }}
+  </div>
 </div>
+  <!--  <div class="form-group">Actual File: <a href="{{ url_for( 'static', filename='uploads/' + task.task_path )}}">{{task.task_path}}</a></div>-->
+  <!--  <div class="form-group">{{ form.fileTask.label }}: {{ form.fileTask}}</div> -->
 {% endblock %}

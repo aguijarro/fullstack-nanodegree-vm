@@ -1,0 +1,43 @@
+{% extends "catalog/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+<h3>Task</h3>
+
+<p>
+      <a href="{{ url_for('mod_catalog.tasks', type_task_id = task.type_task.id ) }}" class="btn btn-sm btn-warning pull-right" role="button">Volver</a>
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Type Task</th>
+                <th>Task</th>
+                <th>Description</th>
+                <th>File</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>API JSON</th>
+                <th>API ATOM</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ task.type_task.name }}</td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.task_path }}</td>
+                <td>{{ task.startDate }}</td>
+                <td>{{ task.endDate }}</td>
+                <td><a href="{{ url_for('mod_catalog.showTaskJSON', task_id = task.id ) }}" class="btn btn-xs btn-link" role="button">JSON</a></td>
+                <td><a href="{{ url_for('mod_catalog.showTaskATOM', task_id = task.id ) }}" class="btn btn-xs btn-link" role="button">ATOM</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  </div>
+{% endblock %}

@@ -1,3 +1,6 @@
+"""
+Contains functions to execute the app
+"""
 import os
 
 if os.path.exists('.env'):
@@ -33,7 +36,6 @@ manager.add_command('db', MigrateCommand)
 def deploy():
     """Run deployment tasks."""
     from flask.ext.migrate import upgrade, migrate
-    from app.mod_catalog.models import TypeTask, Task
     # migrate database to latest revision
     migrate()
     upgrade()

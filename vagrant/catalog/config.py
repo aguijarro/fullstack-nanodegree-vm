@@ -1,3 +1,7 @@
+"""
+Define configuration parameters for the app
+"""
+
 # Define the application directory
 import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -18,6 +22,8 @@ class Config:
     # Use a secure, unique and absolutely secret key for
     # signing the data.
     CSRF_SESSION_KEY = "secret"
+    # Define the number of tasks per pages
+    TASK_PER_PAGE = 5
 
     @staticmethod
     def init_app(app):
@@ -26,6 +32,8 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'postgresql://vagrant:vagrant@localhost/catalog_dev'
+    ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+    UPLOAD_FOLDER = os.environ.get('DEV_UPLOAD_FOLDER') or os.path.realpath('.') + '/app/static/uploads'
 
 config = {
     'development': DevelopmentConfig,

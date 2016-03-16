@@ -1,0 +1,16 @@
+<div id="sidebar">
+    <h3 class="text-center text-title">Type Tasks</h3>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ url_for('mod_catalog.newTypeTask') }}">New Type Task<span class="glyphicon glyphicon-plus-sign pull-right"</span></a>
+        </li>
+        {% for type in typeTasks %}
+        <li class="list-group-item">
+              <a href="{{ url_for('mod_catalog.tasks', type_task_id = type.id) }}">{{type.name}}<span class="glyphicon glyphicon-cog pull-right"</span></a>
+        </li>
+        {% endfor %}
+        <li class="list-group-item">
+            <a href="{{ url_for('mod_catalog.tasks') }}">All<span class="glyphicon glyphicon-folder-open pull-right"</span></a>
+        </li>
+    </ul>
+</div>

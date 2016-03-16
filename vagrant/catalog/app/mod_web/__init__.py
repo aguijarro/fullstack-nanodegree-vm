@@ -1,3 +1,6 @@
+"""
+Initialize the module
+"""
 from flask import Blueprint
 
 mod_web = Blueprint('mod_web', __name__,template_folder='templates', static_folder='static')

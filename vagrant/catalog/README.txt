@@ -1,7 +1,7 @@
 description
 -----------
 
-instructions to install, configure, and to run the program
+Instructions to install, configure, and to run the program
 ------------------------------------------------------------
 
 To execute this app you must do the following steps:
@@ -28,7 +28,7 @@ If you don't want to change the original credentials, ensure that the line below
 In /vagrant/catalog directory execute python app.py db init
 
 
-6) Create creates database tables
+6) Create a database tables
 In /vagrant/catalog directory execute python app.py deploy
 
 7) Run server

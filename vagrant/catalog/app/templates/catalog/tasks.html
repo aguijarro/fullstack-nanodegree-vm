@@ -1,45 +1,19 @@
 {% extends "catalog/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
 
 {% block title %}Tasks{% endblock %}
 
-{% block leftMenu %}
-<ul class="sidebar-nav">
-    <li class="sidebar-brand">
-        <a href="#">
-            Start Bootstrap
-        </a>
-    </li>
-    <li>
-        <a href="#">Dashboard</a>
-    </li>
-    <li>
-        <a href="#">Shortcuts</a>
-    </li>
-    <li>
-        <a href="#">Overview</a>
-    </li>
-    <li>
-        <a href="#">Events</a>
-    </li>
-    <li>
-        <a href="#">About</a>
-    </li>
-    <li>
-        <a href="#">Services</a>
-    </li>
-    <li>
-        <a href="#">Contact</a>
-    </li>
-</ul>
-{% endblock %}
-
-
 {% block content %}
-<h1>Tasks</h1>
+<h3>Tasks</h3>
 
 <p>
-   <a href="{{ url_for('mod_catalog.newTask') }}" class="btn btn-sm btn-success pull-right" role="button">Nuevo</a>
+  {% if type_task_id == None %}
+      <a href="{{ url_for('mod_catalog.newTask') }}" class="btn btn-sm btn-success pull-right" role="button">New</a>
+  {% else %}
+      <a href="{{ url_for('mod_catalog.newTask',type_task_id = type_task_id)}}" class="btn btn-sm btn-success pull-right" role="button">New</a>
+{% endif %}
+
 </p>
 
 <div class="row">
@@ -47,10 +21,11 @@
         <table class="table">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Type Task</th>
                 <th>Task</th>
-                <th>Username</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
@@ -58,10 +33,11 @@
             <tbody>
             {% for task in tasks %}
               <tr>
-                <td>{{ task.name }}</td>
-                <td>{{ task.name }}</td>
-                <td>{{ task.name }}</td>
-                <td>{{ task.name }}</td>
+                <td>{{ task.type_task.name }}</td>
+                <td><a href="{{ url_for('mod_catalog.showTask', task_id = task.id ) }}" class="btn btn-xs btn-link" role="button">{{task.name}}</a></td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.startDate }}</td>
+                <td>{{ task.endDate }}</td>
                 <td><a href="{{ url_for('mod_catalog.editTask', task_id = task.id ) }}" class="btn btn-xs btn-link" role="button">Edit</a></td>
                 <td><a href="{{ url_for('mod_catalog.deleteTask', task_id = task.id ) }}" class="btn btn-xs btn-link" role="button">Delete</a></td>
               </tr>
@@ -71,4 +47,11 @@
           </table>
         </div>
   </div>
+
+  {% if paginationTasks %}
+  <div class="pagination">
+      {{ macros.pagination_widget(paginationTasks, '.tasks') }}
+  </div>
+  {% endif %}
+
 {% endblock %}

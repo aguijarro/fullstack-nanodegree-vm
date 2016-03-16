@@ -104,10 +104,6 @@
   max-width: 100%;
 }
 
-
-
-
-
 /*!
  * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
@@ -232,4 +228,33 @@
         position: relative;
         margin-right: 0;
     }
+}
+
+/* Change Color sidebar menu */
+
+.list-group :not(:first-child)
+{
+  background-color: #CFB76B;
+}
+
+.text-title {
+  color: #2A4E6E;
+}
+
+/* Styles uses to login */
+.login-page {
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+
+.formLogin {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }

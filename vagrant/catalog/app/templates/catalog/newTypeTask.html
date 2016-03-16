@@ -1,0 +1,11 @@
+{% extends "catalog/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}New Task{% endblock %}
+
+{% block content %}
+<h3>New Type Task</h3>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}

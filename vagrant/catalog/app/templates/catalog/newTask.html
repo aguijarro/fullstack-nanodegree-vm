@@ -3,41 +3,20 @@
 
 {% block title %}New Task{% endblock %}
 
-{% block leftMenu %}
-<ul class="sidebar-nav">
-    <li class="sidebar-brand">
-        <a href="#">
-            Start Bootstrap
-        </a>
-    </li>
-    <li>
-        <a href="#">Dashboard</a>
-    </li>
-    <li>
-        <a href="#">Shortcuts</a>
-    </li>
-    <li>
-        <a href="#">Overview</a>
-    </li>
-    <li>
-        <a href="#">Events</a>
-    </li>
-    <li>
-        <a href="#">About</a>
-    </li>
-    <li>
-        <a href="#">Services</a>
-    </li>
-    <li>
-        <a href="#">Contact</a>
-    </li>
-</ul>
-{% endblock %}
-
-
 {% block content %}
-<h1>New Task</h1>
-<div class="col-md-4">
+<h3>New Task</h3>
+<p>
+  {% if type_task_id == None %}
+      <a href="{{ url_for('mod_catalog.tasks') }}" class="btn btn-sm btn-warning pull-right" role="button">Volver</a>
+  {% else %}
+      <a href="{{ url_for('mod_catalog.tasks', type_task_id = type_task_id)}}" class="btn btn-sm btn-warning pull-right" role="button">Volver</a>
+{% endif %}
+</p>
+
+
+<div class="col-md-9">
+  <div class="input-group">
     {{ wtf.quick_form(form) }}
+  </div>
 </div>
 {% endblock %}

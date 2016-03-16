@@ -1,3 +1,6 @@
+"""Get Requirements"""
+pip freeze > requirements.txt
+
 """Execute Requirements"""
 pip install -r requirements.txt
 
