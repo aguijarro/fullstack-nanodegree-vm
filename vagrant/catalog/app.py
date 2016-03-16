@@ -1,4 +1,8 @@
 """
+Based on: Flask Web Development - Miguel Bringer and Udacity https://github.com/udacity/ud330
+"""
+
+"""
 Contains functions to execute the app
 """
 import os
